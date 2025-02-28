@@ -1,0 +1,8 @@
+.venv
+reports
+results
+README.md
+.gitattributes
+.gitignore
+.git
+.gitlab-ci.yml

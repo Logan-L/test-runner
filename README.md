@@ -82,3 +82,31 @@ pip freeze > requirements.txt
 ```bash
 pip install -r requirements.txt
 ```
+
+## Building and Running Images
+### Build
+```bash
+podman build . -t test-runner
+```
+### Run
+```bash
+podman run -it --rm localhost/test-runner
+```
+
+### List images and containers
+```bash
+podman images
+podman ps -a
+```
+
+### Stop and delete everything
+```bash
+podman stop $(podman ps -aq)
+podman rm -a
+podman rmi -a
+```
+
+### Delete unsed images
+```bash
+podman image prune
+```
