@@ -1,13 +1,9 @@
 import platform
 import sys
 import allure
+import os
 from allure_commons.types import AttachmentType
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options as ChromeOptions
-from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
-from selenium.webdriver.firefox.service import Service as FirefoxService
-import os
 
 def before_all(context):
     context.browser = os.environ.get("BROWSER", "chrome").casefold().capitalize()
@@ -31,7 +27,7 @@ def after_all(context):
 # ----- Custom functions -----
 
 def set_allure_environment_values(context):
-    env_info = f"Browser = {context.browser.capitalize()}\nOS_Platform = {platform.system()}\nPython_Version = {sys.version}"
+    env_info = f"Browser = {context.browser}\nOS_Platform = {platform.system()}\nPython_Version = {sys.version}"
 
     try:
         filepath = "results/environment.properties"
@@ -52,17 +48,19 @@ def setup_browser(context):
         print("No browser found in environment variable.")
 
 def setup_chrome(context):
-    chrome_options = ChromeOptions()
+    chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--headless")
-    # chrome_options.add_argument("--window-size=1920,1200")
-    chrome_service = ChromeService(executable_path="/usr/local/bin/chromedriver")
-    context.driver = webdriver.Chrome(options=chrome_options, service=chrome_service)
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_service = webdriver.ChromeService(executable_path="/usr/local/bin/chromedriver")
+    context.driver = webdriver.Firefox(options=chrome_options, service=chrome_service)
 
 def setup_firefox(context):
-    firefox_options = FirefoxOptions()
+    firefox_options = webdriver.FirefoxOptions()
     firefox_options.add_argument("--headless")
-    # firefox_options.add_argument("--window-size=1920,1200")
-    firefox_service = FirefoxService(executable_path="/usr/local/bin/geckodriver")
+    firefox_options.set_preference("layers.acceleration.force-disabled", True)
+    firefox_service = webdriver.FirefoxService(executable_path="/usr/local/bin/geckodriver")
     context.driver = webdriver.Firefox(options=firefox_options, service=firefox_service)
 
 def teardown_browser(context):

@@ -1,0 +1,21 @@
+from selenium import webdriver
+
+print("STARTING CHROME DRIVER")
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument("--headless")
+chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.add_argument("--disable-gpu")
+chrome_service = webdriver.ChromeService(executable_path="/usr/local/bin/chromedriver")
+driver = webdriver.Chrome(options=chrome_options, service=chrome_service)
+driver.quit()
+print("STOPPING CHROME DRIVER")
+
+print("STARTING FIREFOX DRIVER")
+firefox_options = webdriver.FirefoxOptions()
+firefox_options.add_argument("--headless")
+firefox_options.set_preference("layers.acceleration.force-disabled", True)
+firefox_service = webdriver.FirefoxService(executable_path="/usr/local/bin/geckodriver")
+driver = webdriver.Chrome(options=firefox_options, service=firefox_service)
+driver.quit()
+print("STOPPING FIREFOX DRIVER")

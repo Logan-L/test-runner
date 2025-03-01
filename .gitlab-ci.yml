@@ -1,5 +1,4 @@
-# variables: -|
-#   BROWSER = "chrome"
+# --build-arg BROWSER="chrome"
 
 run tests:
   script: -|
